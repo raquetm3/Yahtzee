@@ -52,20 +52,48 @@ scorecard = [
 
 #TODO figure out how to save dice, and unsave them, and update score
 
+
 def main():
     dice = []
     for _ in range(1, 6):
-        die = Die(number=_, value=None)
+        die = Die(number=str(_), value=None)
         dice.append(die)
     start()
     update_score(scorecard)
-    # Roll 5 dice
-    dice = dice_roll(dice)
-    print("\nFirst Roll:\n")
-    print(*dice, sep="\n")
+    saved_dice = []
+    
+    for _ in range(13):
+        while True:
+            scored = False
+            # Roll 5 dice
+            for _ in range(1,4):
+                if scored == False
+                    dice = dice_roll(dice)
+                    print(f"\nRoll Number {_}\n")
+                    print(*dice, sep="\n")
 
-    saved_dice = input("Enter the number of the dice you would like to save, seperated by a space  (1,2,3,4, or 5): ")
-    saved = [die for die in saved_dice.split()]
+                    while True:
+                        choice = input("What do you want to do next?  (save, unsave, score, or roll) ").lower().strip()
+                        if choice == 'save':
+                            to_be_saved = dice_input()
+                            saved_dice.extend(to_be_saved)
+
+                        #TODO add saved dice to new list and remove from dice list
+
+
+                        elif choice == 'score':
+                            score_dice()
+
+
+                        elif choice == 'unsave':  #TODO remove from saved list and add to dice list
+                            ...
+                        elif choice == 'roll':
+                            ...
+                        else:
+                            print("Invalid Input! You must input 'save', 'unsave', 'score', or 'roll'")
+
+                else: #scored = true
+                    break
 
 
 
@@ -95,6 +123,23 @@ def update_score(scorecard):
         tsv_writer = csv.DictWriter(tsvfile, fieldnames=["Category", "Score"],delimiter='\t')
         tsv_writer.writeheader()
         tsv_writer.writerows(scorecard)
+
+def dice_input():
+    while True:
+        die_numbers = input("Enter the number of the dice you would like to save, seperated by a space  (1,2,3,4, or 5): ").strip()
+        pattern = r"^[1-5](?: [1-5]){0,4}$"
+        match = re.search(pattern=pattern, string=die_numbers)
+        if match:
+            numbers = re.findall(r"[1-5]", die_numbers)
+            if len(numbers) == len(set(numbers)):
+                return numbers
+            else:
+                print("Invalid Input! There can't be duplicate dice!")
+        else:
+            print("Invalid Input! You must enter at most 5 numbers (1-5), and numbers must be seperated by a space!")
+
+
+def score_dice()
 
 if __name__ == "__main__":
     main()
